@@ -20,13 +20,19 @@ function App() {
 
   return (
     <div className="App">
-      <ReusableInput amount={bill} onInput={handleAmount} inputType="bill" />
-      <ReusableInput amount={myTip} onInput={handleAmount} inputType="myTip" />
+      <ReusableInput amount={bill} onInput={handleAmount} inputType="bill">
+        How much was the bill? &nbsp;
+      </ReusableInput>
+      <ReusableInput amount={myTip} onInput={handleAmount} inputType="myTip">
+        How did you like the service? &nbsp;
+      </ReusableInput>
       <ReusableInput
         amount={friendTip}
         onInput={handleAmount}
         inputType="friendTip"
-      />
+      >
+        How did your friend like the service? &nbsp;
+      </ReusableInput>
       <h3>
         You pay ${totalTip + bill} (${bill} + ${totalTip} tip)
       </h3>
@@ -35,11 +41,11 @@ function App() {
   );
 }
 
-function ReusableInput({ bill, onInput, inputType }) {
+function ReusableInput({ bill, onInput, inputType, children }) {
   return (
     <div>
       <p>
-        How much was the bill? &nbsp;
+        {children}
         <input
           type="text"
           value={bill}
