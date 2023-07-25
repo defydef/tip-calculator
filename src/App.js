@@ -8,12 +8,18 @@ function App() {
 
   function handleAmount(amount, inputType) {
     if (inputType === "bill") {
-      setBill(Number(amount));
+      setBill(parseFloat(amount, 10));
     } else if (inputType === "myTip") {
-      setMyTip(Number(amount));
+      setMyTip(parseFloat(amount, 10));
     } else {
-      setFriendTip(Number(amount));
+      setFriendTip(parseFloat(amount, 10));
     }
+  }
+
+  function handleReset() {
+    setBill("");
+    setMyTip(0);
+    setFriendTip(0);
   }
 
   let totalTip = (myTip / 100 + friendTip / 100) * bill;
@@ -34,23 +40,38 @@ function App() {
         How did your friend like the service? &nbsp;
       </ReusableInput>
       <h3>
-        You pay ${totalTip + bill} (${bill} + ${totalTip} tip)
+        You pay ${(totalTip + bill).toFixed(2)} (${bill.toFixed(2)} + $
+        {totalTip.toFixed(2)} tip)
       </h3>
-      <button>Reset</button>
+      <button onClick={handleReset}>Reset</button>
     </div>
   );
 }
 
-function ReusableInput({ bill, onInput, inputType, children }) {
+function ReusableInput({ amount, onInput, inputType, children }) {
   return (
     <div>
       <p>
         {children}
-        <input
-          type="text"
-          value={bill}
-          onChange={(e) => onInput(e.target.value, inputType)}
-        />
+
+        {inputType === "bill" ? (
+          <input
+            type="text"
+            placeholder="Bill value"
+            value={amount}
+            onChange={(e) => onInput(e.target.value, inputType)}
+          />
+        ) : (
+          <select
+            value={amount}
+            onChange={(e) => onInput(e.target.value, inputType)}
+          >
+            <option value="0">Dissatisfied (0%)</option>
+            <option value="5">It was okay (5%)</option>
+            <option value="10">It was good (10%)</option>
+            <option value="20">Absolutely amazing! (20%)</option>
+          </select>
+        )}
       </p>
     </div>
   );
